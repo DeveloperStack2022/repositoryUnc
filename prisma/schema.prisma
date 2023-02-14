@@ -1,0 +1,131 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator typegraphql  {
+  provider = "typegraphql-prisma"
+  output   = "../prisma/generated/type-graphql"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id Int @id @default(autoincrement())
+  nombres String
+  username String @unique
+  password String
+  disabled Boolean @default(false)
+}
+
+model Personas {
+  id Int @id @default(autoincrement())
+  gradoPolicial String
+  nombres String 
+  apellidos String
+  invitaciones PersonasOnInvitacion[]
+  Cursos CursosPersonas[]
+  Felecitaciones Felecitaciones[]
+
+  @@map(name:"persona")
+}
+
+model PersonasOnInvitacion {
+  personasId Int
+  invitacionId Int
+
+  Personas Personas @relation(fields: [personasId],references: [id])
+  Invitacion Invitacion @relation(fields: [invitacionId],references: [id])
+
+  assignedBy String
+
+  @@id([personasId,invitacionId])
+    
+  @@map(name:"personasOninvitacion")
+}
+
+model Invitacion {
+  id Int @id @default(autoincrement())
+  lugar String
+  N_Documento String  
+  F_Recepcion String
+  fecha_real String
+  hora String
+  personas PersonasOnInvitacion[]
+  tema_ruta Tema_Ruta? @relation(fields: [tema_ruta_id],references: [id])
+  tema_ruta_id Int?
+  Tipo_R Tipo_R? @relation(fields: [tipo_r_id],references: [id])
+  tipo_r_id Int?
+  TipoReunion TipoReunion @relation(fields: [tipo_reunion_id],references: [id])
+  tipo_reunion_id Int
+
+  @@map(name:"invitacion")
+}
+
+model TipoReunion {
+  id Int @id @default(autoincrement())
+  tipo_reunion String
+  invitacion Invitacion[]
+
+  @@map(name:"tiporeunion")
+}
+
+model Tipo_R {
+  id Int @id @default(autoincrement())
+  tipo_reunion String
+  inivitacion Invitacion[]
+}
+
+model Tema_Ruta {
+  id Int @id @default(autoincrement())
+  tema_text String
+  invitacion Invitacion[]
+  @@map(name:"tema_ruta")
+}
+
+model Cursos {
+  id Int @id @default(autoincrement())
+  nombre_curso String
+  CurosPersonas CursosPersonas[]
+  @@map(name:"cursos")
+}
+
+model CursosPersonas {
+  personasId Int
+  cursosId Int
+
+  Personas Personas @relation(fields: [personasId],references: [id])
+  Cursos Cursos @relation(fields: [cursosId],references: [id])
+
+  assignedBy String
+
+  @@id([personasId,cursosId])
+    
+  @@map(name:"cursosPersonas")
+}
+
+
+model Felecitaciones {
+  id Int @id @default(autoincrement())
+  causa String
+  tipoFelicitacion Tipo_Felecitaciones @relation(fields: [tipoFelicitacionesId],references: [id])
+  tipoFelicitacionesId Int
+  personas Personas @relation(fields: [personaId],references: [id])
+  personaId Int
+}
+
+model Tipo_Felecitaciones {
+  id Int @id @default(autoincrement())
+  tipo String
+  Felecitaciones Felecitaciones[]
+}
+
+enum Role {
+  USER
+  ADMIN
+}

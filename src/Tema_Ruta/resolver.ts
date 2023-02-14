@@ -1,0 +1,1 @@
+// import {Tema_RutaCrudResolver} from '../../prisma/generated/type-graphql'
