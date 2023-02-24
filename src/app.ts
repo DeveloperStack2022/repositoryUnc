@@ -4,9 +4,7 @@ import {buildSchema} from 'type-graphql'
 import 'reflect-metadata'
 // Resolvers
 import {UserResolver as UserResolver} from './User/user-resolver'
-import {PersonasOnInvitacionResolver} from './PersonasOnInvitacion/personasOnInvitacion-resolvers'
-import {PersonasResolvers} from './Persona/persona-resolver'
-import {PersonasRelationsResolver,PersonasCrudResolver,Tema_RutaRelationsResolver,InvitacionCrudResolver,InvitacionRelationsResolver,Tema_RutaCrudResolver,PersonasOnInvitacionRelationsResolver,FindManyTema_RutaResolver} from '../prisma/generated/type-graphql'
+import {Tema_RutaRelationsResolver,InvitacionCrudResolver,InvitacionRelationsResolver,Tema_RutaCrudResolver,PersonasOnInvitacionRelationsResolver,FindManyTema_RutaResolver,TipoReunionCrudResolver,Tipo_RCrudResolver,PersonasCrudResolver,CursosCrudResolver,CursosPersonasCrudResolver,CursosPersonasRelationsResolver} from '../prisma/generated/type-graphql'
 
 
 import path from 'path'
@@ -19,17 +17,19 @@ interface Context {
 async function main(){
   const schema = await buildSchema({
     resolvers:[
-      FindManyTema_RutaResolver,
       UserResolver,
-      PersonasRelationsResolver,
-      PersonasCrudResolver,
+      FindManyTema_RutaResolver,
       Tema_RutaRelationsResolver,
-      InvitacionCrudResolver,
+      InvitacionCrudResolver, 
       InvitacionRelationsResolver,
       Tema_RutaCrudResolver,
       PersonasOnInvitacionRelationsResolver,
-      PersonasOnInvitacionResolver,
-      PersonasResolvers,
+      TipoReunionCrudResolver,
+      Tipo_RCrudResolver,
+      PersonasCrudResolver,
+      CursosCrudResolver,
+      CursosPersonasCrudResolver,
+      CursosPersonasRelationsResolver
     ],
     emitSchemaFile: path.resolve(__dirname,"./schema.graphql"),
     validate:false
@@ -39,8 +39,13 @@ async function main(){
     context: ():Context => ({prisma}),
   })
   const app = express();
+  
   await server.start()
   server.applyMiddleware({app})
+  
+  // app.get('/',(req,res) => {
+  //   res.sendFile(path.join(__dirname, "public", "index.html"));
+  // })
 
   app.listen({port:8000}, () => {
     console.log(`🚀 Server ready and listening at ==> http://localhost:8000${server.graphqlPath}`)
