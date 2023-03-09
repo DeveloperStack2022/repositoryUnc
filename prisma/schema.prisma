@@ -34,7 +34,6 @@ model Personas {
 
   @@map(name:"persona")
 }
-
 model PersonasOnInvitacion {
   personasId Int
   invitacionId Int
@@ -119,19 +118,12 @@ model CursosPersonas {
 
 
 model Felecitaciones {
-
   id Int @id @default(autoincrement())
-  causa String
-  tipoFelicitacion Tipo_Felecitaciones @relation(fields: [tipoFelicitacionesId],references: [id])
-  tipoFelicitacionesId Int
   personas Personas @relation(fields: [personaId],references: [id])
   personaId Int
-}
-
-model Tipo_Felecitaciones {
-  id Int @id @default(autoincrement())
+  fecha DateTime
   tipo String
-  Felecitaciones Felecitaciones[]
+  causa String
 }
 
 enum Role {

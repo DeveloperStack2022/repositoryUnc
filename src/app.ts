@@ -4,7 +4,7 @@ import {buildSchema} from 'type-graphql'
 import 'reflect-metadata'
 // Resolvers
 import {UserResolver as UserResolver} from './User/user-resolver'
-import {Tema_RutaRelationsResolver,InvitacionCrudResolver,InvitacionRelationsResolver,Tema_RutaCrudResolver,PersonasOnInvitacionRelationsResolver,FindManyTema_RutaResolver,TipoReunionCrudResolver,Tipo_RCrudResolver,PersonasCrudResolver,CursosCrudResolver,CursosPersonasCrudResolver,CursosPersonasRelationsResolver} from '../prisma/generated/type-graphql'
+import {Tema_RutaRelationsResolver,InvitacionCrudResolver,InvitacionRelationsResolver,Tema_RutaCrudResolver,PersonasOnInvitacionRelationsResolver,FindManyTema_RutaResolver,TipoReunionCrudResolver,Tipo_RCrudResolver,PersonasCrudResolver,CursosCrudResolver,CursosPersonasCrudResolver,CursosPersonasRelationsResolver,PersonasRelationsResolver,PersonasOnInvitacionCrudResolver,PersonasOnInvitacionListRelationFilter,FelecitacionesCrudResolver} from '../prisma/generated/type-graphql'
 
 
 import path from 'path'
@@ -27,9 +27,13 @@ async function main(){
       TipoReunionCrudResolver,
       Tipo_RCrudResolver,
       PersonasCrudResolver,
+      PersonasRelationsResolver,
       CursosCrudResolver,
       CursosPersonasCrudResolver,
-      CursosPersonasRelationsResolver
+      CursosPersonasRelationsResolver,
+      PersonasOnInvitacionCrudResolver,
+      PersonasOnInvitacionListRelationFilter,
+      FelecitacionesCrudResolver
     ],
     emitSchemaFile: path.resolve(__dirname,"./schema.graphql"),
     validate:false

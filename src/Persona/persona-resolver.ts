@@ -16,4 +16,5 @@ export class PersonasResolvers{
             _count:true
         }})
     }
+
 }  
